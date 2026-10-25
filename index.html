@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>239+ — репетиторы-олимпиадники</title>
+<title>239+ — репетиторы-олимпиадники</title>
 <meta name="description" content="Математика с олимпиадниками из физмат-школ Санкт-Петербурга: олимпиады, школьная программа, поступление в ФМЛ 239 и 30.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ff6a3d'/%3E%3Cpath d='M32 18v28M18 32h28' stroke='%23fff' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f6f4ef;--surface:#ffffff;--surface2:#efece4;--ink:#16171d;--muted:#5d606b;--line:#dedad0;
@@ -30,7 +30,9 @@ html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-h1,h2,h3{font-family:Unbounded,Manrope,sans-serif;letter-spacing:-.02em;margin:0}
+h1,h2,h3{font-family:Unbounded,Manrope,sans-serif;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h3{font-family:Manrope,system-ui,sans-serif;font-weight:800;letter-spacing:-.01em}
+p,li,.lead{text-wrap:pretty}
 h2{font-size:clamp(28px,4.2vw,44px);font-weight:700;line-height:1.08}
 .eyebrow{font:600 13px/1 Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
 .lead{color:var(--muted);font-size:18px;max-width:620px}
@@ -58,7 +60,7 @@ header{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(12px)
 .hero{position:relative;overflow:hidden;padding:84px 0 96px}
 .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 80% 70% at 70% 30%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 80% 70% at 70% 30%,#000 30%,transparent 75%);pointer-events:none}
 .hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,820px);gap:48px;align-items:center}
-.hero h1{font-size:clamp(38px,6.2vw,72px);font-weight:800;line-height:.98}
+.hero h1{font-size:clamp(36px,5.6vw,64px);font-weight:700;line-height:1.04;letter-spacing:-.03em}
 .hero h1 em{font-style:normal;color:var(--accent)}
 .hero .lead{margin:24px 0 32px;font-size:19px}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
@@ -87,9 +89,9 @@ header{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(12px)
 .dir{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px;transition:transform .2s,border-color .2s}
 .dir:hover{transform:translateY(-4px);border-color:var(--accent)}
 .dir .ico{width:46px;height:46px;border-radius:14px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)}
-.dir h3{font-size:19px;font-weight:700;line-height:1.2}
+.dir h3{font-size:20px;line-height:1.25}
 .dir p{margin:0;color:var(--muted);font-size:15px;flex:1}
-.price{font:800 26px/1 Unbounded}
+.price{font:800 26px/1 Unbounded;font-variant-numeric:tabular-nums}
 .price small{font:600 14px Manrope;color:var(--muted)}
 .dir.hot{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .dir.hot p,.dir.hot .price small{color:color-mix(in srgb,var(--bg) 70%,var(--ink))}
@@ -108,13 +110,13 @@ header{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(12px)
 .card-top{display:flex;gap:16px;align-items:center}
 .ava{width:68px;height:68px;border-radius:20px;flex:none;display:grid;place-items:center;font:800 22px Unbounded;color:#fff;overflow:hidden}
 .ava img{width:100%;height:100%;object-fit:cover}
-.card h3{font-size:19px;font-weight:700}
+.card h3{font-size:20px}
 .card .sub{color:var(--muted);font-size:14px;margin-top:4px}
 .role{display:inline-block;margin-top:6px;font:700 11px/1 Manrope;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
 .ach{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .ach li{display:flex;gap:10px;font-size:14.5px;line-height:1.4}
 .ach li::before{content:"";flex:none;width:8px;height:8px;margin-top:6px;border-radius:2px;background:var(--accent);transform:rotate(45deg)}
-.card .about{margin:0;font-size:15px;color:var(--muted);font-style:italic}
+.card .about{margin:0;font-size:15px;color:var(--muted)}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:8px;background:var(--surface2)}
 a.chip,a.tag-link{text-decoration:none;cursor:pointer;transition:border-color .2s,color .2s}
@@ -130,7 +132,7 @@ a.chip:hover{border-color:var(--accent);color:var(--ink)}a.tag-link{color:inheri
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px;counter-reset:s}
 .step{position:relative;padding:26px 22px 22px;border-radius:20px;background:var(--surface);border:1px solid var(--line)}
 .step::before{counter-increment:s;content:"0" counter(s);font:800 40px/1 Unbounded;color:var(--accent);opacity:.9;display:block;margin-bottom:14px}
-.step h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.step h3{font-size:18px;margin-bottom:8px}
 .step p{margin:0;color:var(--muted);font-size:15px}
 @media (max-width:900px){.steps{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.steps{grid-template-columns:1fr}}
@@ -187,17 +189,17 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="eyebrow">Математика с олимпиадниками</div>
-        <h1>Учат те, кто <em>сам решает</em> на финалах</h1>
-        <p class="lead">«239+» — команда школьников и выпускников физмат-школ Санкт-Петербурга. Мы недавно сидели на тех же олимпиадах и экзаменах — и знаем, как объяснить так, чтобы стало понятно.</p>
+        <div class="eyebrow">Математика с олимпиадниками</div>
+        <h1>Учат те, кто <em>сам решает</em> олимпиады</h1>
+        <p class="lead">«239+» — команда школьников и выпускников физмат-школ Санкт-Петербурга. Мы недавно сидели на тех же олимпиадах и экзаменах — и знаем, как объяснить так, чтобы стало понятно.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary js-contact" href="#contact">Записаться на занятие →</a>
+          <a class="btn btn-primary js-contact" href="#contact">Записаться на занятие →</a>
           <a class="btn btn-ghost" href="#tutors">Выбрать репетитора</a>
         </div>
         <div class="chips">
-          <a class="chip" href="#dir-olymp"><b>Олимпиады</b> 5–8 класс</a>
+          <a class="chip" href="#dir-olymp"><b>Олимпиады</b> 5–8 класс</a>
           <a class="chip" href="#dir-school"><b>Школьная</b> программа</a>
-          <a class="chip" href="#dir-entry"><b>Поступление</b> в 239 и 30</a>
+          <a class="chip" href="#dir-entry"><b>Поступление</b> в 239 и 30</a>
         </div>
       </div>
     </div>
@@ -208,33 +210,33 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
       <div class="stat"><div class="n">ВсОШ</div><div class="t">участники заключительного этапа</div></div>
       <div class="stat"><div class="n">Перечень</div><div class="t">призёры перечневых олимпиад</div></div>
       <div class="stat"><div class="n">3</div><div class="t">направления: олимпиады, школа, поступление</div></div>
-      <div class="stat"><div class="n">Онлайн</div><div class="t">из любого города</div></div>
+      <div class="stat"><div class="n">Онлайн</div><div class="t">из любого города</div></div>
     </div>
   </div>
 
   <section id="directions">
     <div class="wrap">
-      <div class="eyebrow">Направления и цены</div>
-      <h2>Три цели — один подход</h2>
-      <p class="lead" style="margin-top:16px">Цена за 60 минут занятия. Без пакетов и предоплаты за месяц — платите за каждое занятие.</p>
+      <div class="eyebrow">Направления и цены</div>
+      <h2>Три цели — один подход</h2>
+      <p class="lead" style="margin-top:16px">Цена за 60 минут занятия. Без пакетов и предоплаты за месяц — платите за каждое занятие.</p>
       <div class="dirs">
         <article id="dir-olymp" class="dir hot reveal">
           <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"/></svg></div>
-          <h3>Олимпиады 5–8 класс</h3>
-          <p>Школьный и муниципальный этап ВсОШ, городская олимпиада: теория чисел, комбинаторика, логика, оформление решений.</p>
-          <div class="price">2000 ₽ <small>/ 60 мин</small></div>
+          <h3>Олимпиады 5–8 класс</h3>
+          <p>Школьный и муниципальный этап ВсОШ, городская олимпиада: теория чисел, комбинаторика, логика, оформление решений.</p>
+          <div class="price">2000 ₽ <small>/ 60 мин</small></div>
         </article>
         <article id="dir-entry" class="dir reveal">
           <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-6 9 6-9 6-9-6z"/><path d="M7 12.5V17c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5"/></svg></div>
-          <h3>Поступление в 239 и 30</h3>
-          <p>Подготовка к математическим турам вступительных в ФМЛ 239 и ФМЛ 30: типовые задачи, нестандартное мышление, разбор прошлых лет.</p>
-          <div class="price">2000 ₽ <small>/ 60 мин</small></div>
+          <h3>Поступление в 239 и 30</h3>
+          <p>Подготовка к математическим турам вступительных в ФМЛ 239 и ФМЛ 30: типовые задачи, нестандартное мышление, разбор прошлых лет.</p>
+          <div class="price">2000 ₽ <small>/ 60 мин</small></div>
         </article>
         <article id="dir-school" class="dir reveal">
           <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-6"/></svg></div>
           <h3>Школьная математика</h3>
-          <p>Закрыть пробелы, разобраться с темой, подтянуть оценки. Спокойно и по шагам, без «это же очевидно».</p>
-          <div class="price">1000 ₽ <small>/ 60 мин</small></div>
+          <p>Закрыть пробелы, разобраться с темой, подтянуть оценки. Спокойно и по шагам, без «это же очевидно».</p>
+          <div class="price">1000 ₽ <small>/ 60 мин</small></div>
         </article>
       </div>
     </div>
@@ -261,12 +263,12 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
   <section id="how">
     <div class="wrap">
       <div class="eyebrow">Как проходит</div>
-      <h2>От заявки до первого «понял!»</h2>
+      <h2>От заявки до первого «понял!»</h2>
       <div class="steps">
-        <div class="step reveal"><h3>Заявка</h3><p>Пишете нам — класс, цель, удобное время. Отвечаем в течение дня.</p></div>
+        <div class="step reveal"><h3>Заявка</h3><p>Пишете нам — класс, цель, удобное время. Отвечаем в течение дня.</p></div>
         <div class="step reveal"><h3>Подбор</h3><p>Подбираем репетитора под задачу: олимпиады, школа или поступление.</p></div>
-        <div class="step reveal"><h3>Первое занятие</h3><p>Знакомство, диагностика уровня и план занятий.</p></div>
-        <div class="step reveal"><h3>Занятия</h3><p>Онлайн с доской, домашка после урока и разборы решений в PDF.</p></div>
+        <div class="step reveal"><h3>Первое занятие</h3><p>Знакомство, диагностика уровня и план занятий.</p></div>
+        <div class="step reveal"><h3>Занятия</h3><p>Онлайн с доской, домашка после урока и разборы решений в PDF.</p></div>
       </div>
     </div>
   </section>
@@ -276,11 +278,11 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
       <div class="eyebrow">Вопросы</div>
       <h2>Частые вопросы</h2>
       <div class="faq">
-        <details><summary>Репетиторы — школьники? Это вообще работает?</summary><p>Да, большинство из нас ещё учится в физмат-школах или недавно их окончили. Зато мы сами недавно прошли через олимпиады и экзамены, решаем задачи каждый день и помним, что было непонятно и как это объяснить.</p></details>
-        <details><summary>Как проходят онлайн-занятия?</summary><p>По видеосвязи с общей доской: решаем задачи вместе, ученик пишет сам. После занятия — домашнее задание и, при необходимости, разбор решений в PDF.</p></details>
-        <details><summary>Можно ли заниматься очно?</summary><p>Очные занятия возможны только для учеников ФМЛ 239. Для всех остальных — онлайн.</p></details>
-        <details><summary>Как оплачивать?</summary><p>Оплата за каждое занятие, без абонементов. Способ оплаты согласуем при записи.</p></details>
-        <details><summary>Что если репетитор не подойдёт?</summary><p>Напишите нам — подберём другого из команды без доплат.</p></details>
+        <details><summary>Репетиторы — школьники? Это вообще работает?</summary><p>Да, большинство из нас ещё учится в физмат-школах или недавно их окончили. Зато мы сами недавно прошли через олимпиады и экзамены, решаем задачи каждый день и помним, что было непонятно и как это объяснить.</p></details>
+        <details><summary>Как проходят онлайн-занятия?</summary><p>По видеосвязи с общей доской: решаем задачи вместе, ученик пишет сам. После занятия — домашнее задание и, при необходимости, разбор решений в PDF.</p></details>
+        <details><summary>Можно ли заниматься очно?</summary><p>Очные занятия возможны только для учеников ФМЛ 239. Для всех остальных — онлайн.</p></details>
+        <details><summary>Как оплачивать?</summary><p>Оплата за каждое занятие, без абонементов. Способ оплаты согласуем при записи.</p></details>
+        <details><summary>Что если репетитор не подойдёт?</summary><p>Напишите нам — подберём другого из команды без доплат.</p></details>
       </div>
     </div>
   </section>
@@ -288,9 +290,9 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
   <section id="contact" style="padding-top:24px">
     <div class="wrap">
       <div class="cta reveal">
-        <h2>Запишитесь на занятие</h2>
-        <p>Расскажите класс ученика и цель — подберём репетитора и согласуем время.</p>
-        <a class="btn btn-primary js-contact" href="#contact">Написать в Telegram →</a>
+        <h2>Запишитесь на занятие</h2>
+        <p>Расскажите класс ученика и цель — подберём репетитора и согласуем время.</p>
+        <a class="btn btn-primary js-contact" href="#contact">Написать в Telegram →</a>
         <p class="note">Онлайн · удобное время · подбор репетитора под задачу</p>
       </div>
     </div>
@@ -300,7 +302,7 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
 <footer>
   <div class="wrap foot">
     <a class="logo" href="#top" style="font-size:16px"><svg viewBox="0 0 64 64" style="width:26px;height:26px" aria-hidden="true"><rect width="64" height="64" rx="16" fill="var(--accent)"/><path d="M32 17v30M17 32h30" stroke="var(--accent-ink)" stroke-width="8" stroke-linecap="round"/></svg>239+</a>
-    <div class="disclaimer">Проект учеников и выпускников ФМЛ 239, не является официальным проектом лицея.</div>
+    <div class="disclaimer">Проект учеников и выпускников ФМЛ 239, не является официальным проектом лицея.</div>
   </div>
 </footer>
 
@@ -311,7 +313,8 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
   var PAL = ["#ff6a3d","#2f5bea","#14a37f","#a24bd6","#e0a21b","#d6456c"];
 
   function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h)}
-  function el(tag, cls, text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+  function typo(t){return String(t).replace(/(^|[\s(«])(в|и|с|к|о|у|а|на|по|не|за|до|из|от|без|для|—)\s+/gi,"$1$2\u00a0").replace(/(\d)\s+(₽|класс|мин)/g,"$1\u00a0$2").replace(/(ФМЛ)\s+(\d)/g,"$1\u00a0$2").replace(/ —/g,"\u00a0—")}
+  function el(tag, cls, text){var e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=typo(text);return e}
   function initials(n){return n.split(/\s+/).filter(Boolean).slice(0,2).map(function(w){return w[0]}).join("").toUpperCase()}
 
   function avatar(t){
