@@ -43,7 +43,7 @@
     TUTORS.forEach(function(t){grid.appendChild(card(t))});
     var join = el("article","card join");
     join.appendChild(el("h3",null,"Скоро здесь появятся новые репетиторы"));
-    join.appendChild(el("p",null,"Команда собирается: призёры и победители олимпиад из 239."));
+    join.appendChild(el("p",null,"Команда собирается: победители и призёры олимпиад из 239."));
     grid.appendChild(join);
   }
 
