@@ -119,19 +119,32 @@
     list.forEach(function(t){ map[t.name] = {}; slotsFor(t.name, day).forEach(function(x){ map[t.name][x.h] = x; if (hours.indexOf(x.h) < 0) hours.push(x.h) }) });
     if (!hours.length) { box.appendChild(el("p","empty","На этот день свободных окон нет — выберите день с зелёной точкой.")); return }
     hours.sort();
-    var rows = hours;  // только реальные времена начала (бывают и :30)
+    // сплошная шкала по 30 минут; занятие — блок на 2 строки (60 мин)
+    var mins = function(h){ var p = h.split(":"); return +p[0] * 60 + +p[1] }, fmt = function(m){ return String(Math.floor(m / 60)).padStart(2,"0") + ":" + String(m % 60).padStart(2,"0") };
+    var start = Math.floor(mins(hours[0]) / 30) * 30, end = mins(hours[hours.length-1]) + 60, rows = [];
+    for (var m = start; m < end; m += 30) rows.push(fmt(m));
     var wrap = el("div","sched"), tb = document.createElement("table");
-    var tr = document.createElement("tr"); tr.appendChild(el("th","tcol","Время"));
+    var tr = document.createElement("tr"); tr.appendChild(el("th","tcol",""));
     list.forEach(function(t){ var th = el("th"); var hd = el("div","th-t"); hd.appendChild(avatar(t)); var nm = el("div"); nm.appendChild(el("b",null,t.name)); nm.appendChild(el("small",null,t.grade||"")); hd.appendChild(nm); th.appendChild(hd); tr.appendChild(th) });
     var thead = document.createElement("thead"); thead.appendChild(tr); tb.appendChild(thead);
-    var tbody = document.createElement("tbody");
+    var tbody = document.createElement("tbody"), skip = {};
     rows.forEach(function(r){
-      var tr = document.createElement("tr"); tr.appendChild(el("td","tcol",r));
+      var tr = document.createElement("tr"); tr.appendChild(el("td","tcol" + (r.slice(3) === "00" ? "" : " half"), r.slice(3) === "00" ? r : ""));
       list.forEach(function(t){
+        if (skip[t.name + r]) return;
         var x = map[t.name][r], td = document.createElement("td");
-        if (!x) { td.className = "c-off"; td.title = "Нет окна" }
-        else if (x.busy) { td.className = "c-busy"; td.appendChild(el("span",null,"занято")) }
-        else { var b = el("button","c-free",PRICE[cat]); b.type = "button"; b.setAttribute("aria-label", t.name + ", " + r + ", свободно"); b.onclick = function(){ book(t, day, r) }; td.appendChild(b) }
+        if (!x) td.className = "c-off";
+        else {
+          td.rowSpan = 2; skip[t.name + fmt(mins(r) + 30)] = 1;
+          var span = r + "–" + fmt(mins(r) + 60);
+          if (x.busy) { td.className = "c-busy"; var d = el("div","blk"); d.appendChild(el("small",null,span)); d.appendChild(el("b",null,"занято")); td.appendChild(d) }
+          else {
+            td.className = "c-slot";
+            var b = el("button","c-free"); b.type = "button"; b.setAttribute("aria-label", t.name + ", " + span + ", свободно");
+            b.appendChild(el("small",null,span)); b.appendChild(el("b",null,PRICE[cat]));
+            b.onclick = function(){ book(t, day, r) }; td.appendChild(b);
+          }
+        }
         tr.appendChild(td);
       });
       tbody.appendChild(tr);

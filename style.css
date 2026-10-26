@@ -202,3 +202,24 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
 @media (prefers-reduced-motion:no-preference){.js .reveal:not(.in){opacity:0;transform:translateY(16px)}.js .reveal{transition:opacity .6s ease,transform .6s ease}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media (max-width:560px){section{padding:64px 0}.hero{padding:56px 0 72px}body{font-size:16px}}
+
+/* расписание-календарь */
+.cats{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.cats .cat{flex:none;padding:10px 14px;border-radius:999px;font-size:14px}
+.cats .cat small{display:inline;margin:0 0 0 6px;font-size:12.5px}
+.sched{max-height:70vh;overflow:auto}
+.sched th{position:sticky;top:0;z-index:2;min-width:132px}
+.sched thead .tcol{z-index:3}
+.sched td{height:30px;min-width:132px;border-bottom:0}
+.sched tr td.tcol{border-top:1px solid var(--line);vertical-align:top;padding-top:4px;font-size:13px}
+.sched tr td.tcol.half{border-top:1px dashed color-mix(in srgb,var(--line) 60%,transparent)}
+.c-off{border-top:1px solid color-mix(in srgb,var(--line) 50%,transparent)}
+.c-slot,.c-busy{padding:3px!important;background:none}
+.c-free,.c-busy .blk{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:2px;width:100%;height:100%;min-height:56px;border-radius:12px;padding:8px 10px;text-align:left}
+.c-free{border:0;background:var(--ok-soft);color:var(--ok);box-shadow:inset 0 0 0 1.5px var(--ok);cursor:pointer;font:inherit}
+.c-free small,.c-busy small{font:700 11.5px Manrope;opacity:.85;font-variant-numeric:tabular-nums}
+.c-free b{font:800 15px Manrope}
+.c-free:hover{background:var(--ok);color:#fff}
+.c-busy .blk{background:repeating-linear-gradient(135deg,var(--busy-soft) 0 6px,color-mix(in srgb,var(--busy-soft) 45%,transparent) 6px 12px);color:var(--busy);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--busy) 50%,transparent)}
+.c-busy b{font:800 14px Manrope}
+@media (max-width:560px){.sched th,.sched td{min-width:118px}.sched .tcol{min-width:52px;width:52px}.th-t .ava{display:none}}
