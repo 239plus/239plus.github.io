@@ -75,7 +75,7 @@
   }
 
   // ---- запись ----
-  var CATS = [["olymp","Олимпиады","с призёром ВсОШ · 4000 ₽"],["entry","Поступление в 239","5, 8, 9, 10 класс · 2000 ₽"],["school","Школьная","1500 ₽"]];
+  var CATS = [["olymp","Олимпиады","с призёром ВсОШ · 4000 ₽"],["entry","Поступление в 239","5, 8, 9, 10 класс · 2000 ₽"],["school","Школьная","2000 ₽"]];
   var WD = ["Вс","Пн","Вт","Ср","Чт","Пт","Сб"], MON = ["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
   var cat = "olymp", sel = {}, focus = null;
   function msk(){ var d = new Date(Date.now() + (new Date().getTimezoneOffset() + 180) * 60000); return d }  // «сейчас» по Москве
@@ -93,7 +93,7 @@
     var c = document.getElementById("cats"); c.innerHTML = "";
     CATS.forEach(function(x){ var b = el("button","cat",x[1]); b.type = "button"; b.appendChild(el("small",null,x[2])); b.setAttribute("aria-pressed", x[0] === cat); b.onclick = function(){ cat = x[0]; focus = null; renderBook() }; c.appendChild(b) });
   }
-  var PRICE = {olymp: "4000 ₽", entry: "2000 ₽", school: "1500 ₽"}, day = null;
+  var PRICE = {olymp: "4000 ₽", entry: "2000 ₽", school: "2000 ₽"}, day = null;
   function renderBook(){
     renderCats();
     var box = document.getElementById("bk"); box.innerHTML = "";
