@@ -137,6 +137,21 @@ a.chip:hover{border-color:var(--accent);color:var(--ink)}a.tag-link{color:inheri
 .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:18px;font-size:14px;color:var(--muted)}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:4px;margin-right:6px;vertical-align:-1px}
 .bk{display:grid;gap:16px;margin-top:22px}
+.days .day{min-width:62px;padding:10px 8px;border-radius:16px;background:var(--surface)}
+.days .day b{display:block;font:800 22px/1.1 Unbounded;margin:2px 0}
+.days .day[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sched{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.sched table{border-collapse:collapse;width:100%;min-width:max-content}
+.sched th,.sched td{border-bottom:1px solid var(--line);border-left:1px solid var(--line);padding:0;height:56px;min-width:150px}
+.sched th{height:auto;padding:12px;background:var(--surface2);text-align:left;font-weight:600}
+.th-t{display:flex;gap:10px;align-items:center}.th-t .ava{width:36px;height:36px;border-radius:10px;font-size:13px}
+.th-t b{display:block;font-size:14px}.th-t small{color:var(--muted);font-size:12px}
+.sched .tcol{position:sticky;left:0;z-index:1;min-width:72px;width:72px;border-left:0;background:var(--surface2);font:700 14px Manrope;font-variant-numeric:tabular-nums;text-align:center;color:var(--muted)}
+.sched tr:last-child td{border-bottom:0}
+.c-off{background:repeating-linear-gradient(135deg,var(--surface2) 0 6px,transparent 6px 12px)}
+.c-busy{background:repeating-linear-gradient(135deg,var(--busy-soft) 0 6px,color-mix(in srgb,var(--busy-soft) 40%,transparent) 6px 12px);text-align:center;color:var(--busy);font-weight:700;font-size:13px}
+.c-free{display:block;width:100%;height:56px;border:0;background:var(--ok-soft);color:var(--ok);font:800 15px Manrope;cursor:pointer;transition:background .15s}
+.c-free:hover{background:var(--ok);color:#fff}
 .bk-t{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow)}
 .bk-head{display:flex;gap:14px;align-items:center;margin-bottom:14px}
 .bk-head .ava{width:48px;height:48px;border-radius:14px;font-size:16px}
@@ -453,35 +468,51 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
     var c = document.getElementById("cats"); c.innerHTML = "";
     CATS.forEach(function(x){ var b = el("button","cat",x[1]); b.type = "button"; b.appendChild(el("small",null,x[2])); b.setAttribute("aria-pressed", x[0] === cat); b.onclick = function(){ cat = x[0]; focus = null; renderBook() }; c.appendChild(b) });
   }
+  var PRICE = {olymp: "2000 ₽", entry: "2000 ₽", school: "1500 ₽"}, day = null;
   function renderBook(){
     renderCats();
     var box = document.getElementById("bk"); box.innerHTML = "";
     var list = TUTORS.filter(function(t){ return (t.directions||[]).indexOf(cat) >= 0 });
     if (focus) list.sort(function(a,b){ return (b.name === focus) - (a.name === focus) });
     if (!list.length) { box.appendChild(el("p","empty","В этом направлении скоро появятся репетиторы.")); return }
-    list.forEach(function(t){
-      var w = el("div","bk-t"), head = el("div","bk-head"); head.appendChild(avatar(t));
-      var who = el("div"); who.appendChild(el("h3",null,t.name)); who.appendChild(el("div","sub",t.grade||"")); head.appendChild(who); w.appendChild(head);
-      var ds = days(), withSlots = ds.filter(function(d){ return slotsFor(t.name, d).length });
-      if (!withSlots.length) { w.appendChild(el("p","empty","Свободные окна скоро появятся.")); box.appendChild(w); return }
-      if (!sel[t.name] || !slotsFor(t.name, sel[t.name]).length) sel[t.name] = withSlots[0];
-      var strip = el("div","days"), slots = el("div","slots");
-      ds.forEach(function(d){
-        var s = slotsFor(t.name, d), b = el("button","day",WD[d.getDay()]); b.type = "button";
-        b.appendChild(el("small",null,d.getDate() + " " + MON[d.getMonth()]));
-        if (!s.length) b.disabled = true; else if (s.some(function(x){ return !x.busy })) b.appendChild(el("span","dot"));
-        b.setAttribute("aria-pressed", iso(d) === iso(sel[t.name]));
-        b.onclick = function(){ sel[t.name] = d; renderBook() };
-        strip.appendChild(b);
-      });
-      var d = sel[t.name];
-      slotsFor(t.name, d).forEach(function(x){
-        var b = el("button","slot " + (x.busy ? "busy" : "free"), x.h); b.type = "button";
-        if (x.busy) { b.disabled = true; b.title = "Занято" } else b.onclick = function(){ book(t, d, x.h) };
-        slots.appendChild(b);
-      });
-      w.appendChild(strip); w.appendChild(slots); box.appendChild(w);
+    var ds = days(), has = function(d){ return list.some(function(t){ return slotsFor(t.name, d).length }) };
+    if (!day || !has(day)) day = ds.filter(has)[0] || ds[0];
+    // лента дней
+    var strip = el("div","days");
+    ds.forEach(function(d){
+      var b = el("button","day",WD[d.getDay()]); b.type = "button";
+      b.appendChild(el("b",null,String(d.getDate()))); b.appendChild(el("small",null,MON[d.getMonth()]));
+      var free = list.some(function(t){ return slotsFor(t.name, d).some(function(x){ return !x.busy }) });
+      if (free) b.appendChild(el("span","dot"));
+      b.setAttribute("aria-pressed", iso(d) === iso(day));
+      b.onclick = function(){ day = d; renderBook() };
+      strip.appendChild(b);
     });
+    box.appendChild(strip);
+    // таблица: строки — часы, столбцы — репетиторы
+    var map = {}, hours = [];
+    list.forEach(function(t){ map[t.name] = {}; slotsFor(t.name, day).forEach(function(x){ map[t.name][x.h] = x; if (hours.indexOf(x.h) < 0) hours.push(x.h) }) });
+    if (!hours.length) { box.appendChild(el("p","empty","На этот день свободных окон нет — выберите день с зелёной точкой.")); return }
+    hours.sort();
+    var first = +hours[0].slice(0,2), last = +hours[hours.length-1].slice(0,2), rows = [];
+    for (var h = first; h <= last; h++) rows.push(String(h).padStart(2,"0") + ":00");
+    var wrap = el("div","sched"), tb = document.createElement("table");
+    var tr = document.createElement("tr"); tr.appendChild(el("th","tcol","Время"));
+    list.forEach(function(t){ var th = el("th"); var hd = el("div","th-t"); hd.appendChild(avatar(t)); var nm = el("div"); nm.appendChild(el("b",null,t.name)); nm.appendChild(el("small",null,t.grade||"")); hd.appendChild(nm); th.appendChild(hd); tr.appendChild(th) });
+    var thead = document.createElement("thead"); thead.appendChild(tr); tb.appendChild(thead);
+    var tbody = document.createElement("tbody");
+    rows.forEach(function(r){
+      var tr = document.createElement("tr"); tr.appendChild(el("td","tcol",r));
+      list.forEach(function(t){
+        var x = map[t.name][r], td = document.createElement("td");
+        if (!x) { td.className = "c-off"; td.title = "Нет окна" }
+        else if (x.busy) { td.className = "c-busy"; td.appendChild(el("span",null,"занято")) }
+        else { var b = el("button","c-free",PRICE[cat]); b.type = "button"; b.setAttribute("aria-label", t.name + ", " + r + ", свободно"); b.onclick = function(){ book(t, day, r) }; td.appendChild(b) }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    tb.appendChild(tbody); wrap.appendChild(tb); box.appendChild(wrap);
   }
   function book(t, d, h){
     var catName = CATS.filter(function(x){ return x[0] === cat })[0][1];
