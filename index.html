@@ -498,6 +498,11 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
   }
   function pickTutor(t){ if ((t.directions||[]).indexOf(cat) < 0) cat = t.directions[0]; focus = t.name; renderBook() }
   renderBook();
+  // свежая версия расписания в обход кэша GitHub Pages (кэш до 10 минут)
+  fetch("schedule.js?t=" + Date.now(), {cache: "no-store"}).then(function(r){ return r.text() }).then(function(src){
+    var fresh = new Function(src + "; return SCHEDULE;")();
+    Object.keys(SCHEDULE).forEach(function(k){ delete SCHEDULE[k] }); Object.assign(SCHEDULE, fresh); renderBook();
+  }).catch(function(){});
 
   document.querySelectorAll(".js-contact").forEach(function(a){
     a.href = CONTACT_URL;

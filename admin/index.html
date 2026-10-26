@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>239+ — расписание</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4ef;--surface:#fff;--surface2:#efece4;--ink:#16171d;--muted:#5d606b;--line:#dedad0;--accent:#ff6a3d;--ok:#1f9d55;--ok-soft:#e1f5e8;--busy:#d33a3a;--busy-soft:#fbe4e4}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1116;--surface:#171a21;--surface2:#1e222b;--ink:#f1efe9;--muted:#a3a7b3;--line:#2a2f3a;--accent:#ff7a4f;--ok:#4cc77a;--ok-soft:#16301f;--busy:#ff6b6b;--busy-soft:#3a1c1c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.5 Manrope,system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 60px}
+h1{font:700 26px/1.1 Unbounded,sans-serif;margin:8px 0 4px}
+h2{font:800 17px Manrope;margin:28px 0 6px}
+.muted{color:var(--muted);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:16px}
+input,select{font:inherit;color:var(--ink);background:var(--surface2);border:1.5px solid var(--line);border-radius:10px;padding:9px 11px}
+input{width:100%}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:0;border-radius:12px;padding:11px 18px;font:800 15px Manrope;cursor:pointer;background:var(--accent);color:#fff}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.grid{display:grid;gap:4px;overflow-x:auto}
+.cell{border:0;border-radius:8px;padding:8px 0;font:700 13px Manrope;font-variant-numeric:tabular-nums;cursor:pointer;background:var(--surface2);color:var(--muted);min-width:52px}
+.cell.on{background:var(--ok-soft);color:var(--ok);box-shadow:inset 0 0 0 1.5px var(--ok)}
+.cell.busy{background:var(--busy-soft);color:var(--busy);box-shadow:inset 0 0 0 1.5px var(--busy)}
+.hd{font:800 13px Manrope;text-align:center;padding:4px 0}
+.hd small{display:block;font-weight:600;color:var(--muted)}
+.status{margin-top:10px;font-weight:700}
+.status.ok{color:var(--ok)}.status.err{color:var(--busy)}
+details summary{cursor:pointer;font-weight:700}
+ol{padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a href="../" class="muted">← на сайт</a>
+  <h1>Расписание «239+»</h1>
+  <p class="muted">Здесь меняются окна записи на сайте. Изменения появляются на сайте через 1–2 минуты после «Сохранить».</p>
+
+  <div class="card" id="login">
+    <b>Ключ GitHub</b>
+    <p class="muted" style="margin:4px 0 10px">Хранится только в этом браузере. Никому его не пересылайте.</p>
+    <div class="row"><input id="token" type="password" placeholder="github_pat_…" autocomplete="off"><button class="btn" id="saveToken">Войти</button></div>
+    <details style="margin-top:12px"><summary>Где взять ключ</summary>
+      <ol class="muted">
+        <li>github.com → аватар → Settings → Developer settings → Personal access tokens → <b>Fine-grained tokens</b> → Generate new token.</li>
+        <li>Resource owner: <b>239plus</b>. Repository access: Only select repositories → <b>239plus.github.io</b>.</li>
+        <li>Permissions → Repository permissions → <b>Contents: Read and write</b>. Срок — например, 1 год.</li>
+        <li>Generate → скопировать ключ и вставить сюда.</li>
+      </ol>
+    </details>
+  </div>
+
+  <div id="app" hidden>
+    <div class="card">
+      <div class="row"><b>Репетитор:</b> <select id="tutor"></select><span class="muted" id="who"></span></div>
+
+      <h2>Постоянные окна по неделе</h2>
+      <p class="muted">Нажмите на час, чтобы открыть или закрыть его каждую неделю. Зелёный — открыто.</p>
+      <div class="grid" id="week"></div>
+
+      <h2>Ближайшие 2 недели</h2>
+      <p class="muted">Нажмите на открытое окно, чтобы отметить его <b style="color:var(--busy)">занятым</b> (или снова свободным). Серые — закрыты в шаблоне.</p>
+      <div class="grid" id="dates"></div>
+
+      <div class="row" style="margin-top:20px"><button class="btn" id="save">Сохранить</button><button class="btn ghost" id="logout">Выйти</button></div>
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var REPO = "239plus/239plus.github.io", PATH = "schedule.js", API = "https://api.github.com/repos/" + REPO + "/contents/" + PATH;
+  var HOURS = []; for (var h = 9; h <= 21; h++) HOURS.push(String(h).padStart(2, "0") + ":00");
+  var WD = ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"], JSWD = ["Вс","Пн","Вт","Ср","Чт","Пт","Сб"], MON = ["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
+  var $ = function(id){ return document.getElementById(id) };
+  var token = "", sha = "", head = "", data = {}, cur = "", dirty = false;
+  try { token = localStorage.getItem("gh239") || "" } catch(e) {}
+
+  function b64d(s){ return decodeURIComponent(escape(atob(s.replace(/\n/g, "")))) }
+  function b64e(s){ return btoa(unescape(encodeURIComponent(s))) }
+  function status(t, cls){ var s = $("status"); s.textContent = t; s.className = "status " + (cls || "") }
+  function req(method, body){
+    return fetch(API + (method === "GET" ? "?ref=main&t=" + Date.now() : ""), {method: method, headers: {Authorization: "Bearer " + token, Accept: "application/vnd.github+json"}, body: body && JSON.stringify(body)})
+      .then(function(r){ return r.json().then(function(j){ if (!r.ok) throw new Error(j.message || r.status); return j }) });
+  }
+  function load(){
+    status("Загружаю…");
+    return req("GET").then(function(j){
+      sha = j.sha; var src = b64d(j.content);
+      head = src.slice(0, src.indexOf("const SCHEDULE"));
+      data = new Function(src + "; return SCHEDULE;")();
+      $("login").hidden = true; $("app").hidden = false;
+      var sel = $("tutor"); sel.innerHTML = "";
+      Object.keys(data).forEach(function(n){ sel.appendChild(new Option(n, n)) });
+      cur = cur && data[cur] ? cur : Object.keys(data)[0]; sel.value = cur;
+      render(); status("");
+    }).catch(function(e){ status("Ошибка: " + e.message + ". Проверьте ключ.", "err"); $("login").hidden = false; $("app").hidden = true });
+  }
+  function iso(d){ return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0") }
+  function T(){ var t = data[cur]; t.week = t.week || {}; t.busy = t.busy || []; t.off = t.off || []; return t }
+  function cell(text, cls, fn){ var b = document.createElement("button"); b.className = "cell " + cls; b.textContent = text; b.onclick = fn; return b }
+  function hd(a, b){ var d = document.createElement("div"); d.className = "hd"; d.textContent = a; if (b) { var s = document.createElement("small"); s.textContent = b; d.appendChild(s) } return d }
+  function render(){
+    var t = T(), w = $("week"); w.innerHTML = ""; w.style.gridTemplateColumns = "repeat(7, minmax(52px, 1fr))";
+    WD.forEach(function(d){ w.appendChild(hd(d)) });
+    HOURS.forEach(function(h){ WD.forEach(function(d){
+      var on = (t.week[d] || []).indexOf(h) >= 0;
+      w.appendChild(cell(h, on ? "on" : "", function(){
+        var a = t.week[d] || []; t.week[d] = on ? a.filter(function(x){ return x !== h }) : a.concat(h).sort();
+        if (!t.week[d].length) delete t.week[d]; dirty = true; render();
+      }));
+    }) });
+    var ds = $("dates"); ds.innerHTML = ""; ds.style.gridTemplateColumns = "repeat(14, minmax(52px, 1fr))";
+    var now = new Date(), list = [];
+    for (var i = 0; i < 14; i++) list.push(new Date(now.getFullYear(), now.getMonth(), now.getDate() + i));
+    list.forEach(function(d){ ds.appendChild(hd(JSWD[d.getDay()], d.getDate() + " " + MON[d.getMonth()])) });
+    HOURS.forEach(function(h){ list.forEach(function(d){
+      var open = (t.week[JSWD[d.getDay()]] || []).indexOf(h) >= 0, key = cur + "|" + iso(d) + "|" + h, busy = t.busy.indexOf(key) >= 0;
+      var c = cell(h, !open ? "" : busy ? "busy" : "on", function(){
+        if (!open) return;
+        t.busy = busy ? t.busy.filter(function(x){ return x !== key }) : t.busy.concat(key); dirty = true; render();
+      });
+      if (!open) c.style.opacity = ".35";
+      ds.appendChild(c);
+    }) });
+    $("who").textContent = dirty ? "· есть несохранённые изменения" : "";
+  }
+  function serialize(){
+    var today = iso(new Date()), out = head + "const SCHEDULE = {\n";
+    Object.keys(data).forEach(function(n){
+      var t = data[n];
+      // прошедшие даты чистим, чтобы файл не рос
+      var busy = (t.busy || []).filter(function(k){ return k.split("|")[1] >= today }).sort();
+      var off = (t.off || []).filter(function(k){ return k.split("|")[1] >= today }).sort();
+      var week = {}; WD.forEach(function(d){ if (t.week && t.week[d] && t.week[d].length) week[d] = t.week[d] });
+      out += "  " + JSON.stringify(n) + ": {\n    week: " + JSON.stringify(week) +
+        ",\n    busy: " + JSON.stringify(busy) + ",\n    off: " + JSON.stringify(off) + ",\n  },\n";
+    });
+    return out + "};\n";
+  }
+  $("saveToken").onclick = function(){ token = $("token").value.trim(); try { localStorage.setItem("gh239", token) } catch(e) {} load() };
+  $("logout").onclick = function(){ try { localStorage.removeItem("gh239") } catch(e) {} location.reload() };
+  $("tutor").onchange = function(){ cur = this.value; render() };
+  $("save").onclick = function(){
+    var b = this; b.disabled = true; status("Сохраняю…");
+    var text = serialize();
+    try { new Function(text + "; return SCHEDULE;")() } catch(e) { status("Ошибка в данных, не сохранено", "err"); b.disabled = false; return }
+    req("PUT", {message: "Расписание: " + cur, content: b64e(text), sha: sha, branch: "main"})
+      .then(function(j){ sha = j.content.sha; dirty = false; render(); status("Сохранено ✓ На сайте появится через 1–2 минуты.", "ok") })
+      .catch(function(e){ status("Не сохранилось: " + e.message + (/sha|match/i.test(e.message) ? " — расписание поменяли параллельно, обновите страницу." : ""), "err") })
+      .finally(function(){ b.disabled = false });
+  };
+  window.addEventListener("beforeunload", function(e){ if (dirty) { e.preventDefault(); e.returnValue = "" } });
+  if (token) load();
+})();
+</script>
+</body>
+</html>
