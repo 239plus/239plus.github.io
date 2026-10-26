@@ -28,7 +28,7 @@ const TUTORS = [
       "С 5 класса в Матцентре"
     ],
     topics: ["Комбинаторика", "Теория чисел"],
-    directions: ["entry", "school"],
+    directions: ["olymp", "entry", "school"],
     about: "",
     format: "Онлайн"
   },
