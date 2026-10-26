@@ -225,3 +225,16 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
 @media (max-width:560px){.sched th,.sched td{min-width:118px}.sched .tcol{min-width:52px;width:52px}.th-t .ava{display:none}}
 .c-past .blk{background:var(--surface2);color:var(--muted);box-shadow:none}
 .days .day.past{opacity:.6}
+/* таблица на репетитора: дни столбцами */
+.bk-t .sched{max-height:none;border-radius:14px}
+.sched th.dcol{min-width:104px;text-align:center;padding:8px 6px;line-height:1.15}
+.sched th.dcol b{display:block;font:800 20px/1.1 Unbounded;margin:2px 0}
+.sched th.dcol small{display:block;font-size:11.5px;color:var(--muted);font-weight:700}
+.sched th.dcol.today{background:var(--accent);color:var(--accent-ink)}.sched th.dcol.today small{color:inherit;opacity:.85}
+.sched th.dcol.pastd{opacity:.55}
+.sched td{min-width:104px}
+.sched td.today{background-color:color-mix(in srgb,var(--accent) 5%,transparent)}
+@media (max-width:560px){.sched th.dcol,.sched td{min-width:92px}}
+.bk{grid-template-columns:minmax(0,1fr)}
+.bk-t{min-width:0}
+.bk-t .sched{max-width:100%}
