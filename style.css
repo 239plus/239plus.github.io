@@ -238,3 +238,4 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
 .bk{grid-template-columns:minmax(0,1fr)}
 .bk-t{min-width:0}
 .bk-t .sched{max-width:100%}
+.chip{font-weight:800;color:var(--ink)}
