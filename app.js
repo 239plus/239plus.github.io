@@ -119,8 +119,7 @@
     list.forEach(function(t){ map[t.name] = {}; slotsFor(t.name, day).forEach(function(x){ map[t.name][x.h] = x; if (hours.indexOf(x.h) < 0) hours.push(x.h) }) });
     if (!hours.length) { box.appendChild(el("p","empty","На этот день свободных окон нет — выберите день с зелёной точкой.")); return }
     hours.sort();
-    var first = +hours[0].slice(0,2), last = +hours[hours.length-1].slice(0,2), rows = [];
-    for (var h = first; h <= last; h++) rows.push(String(h).padStart(2,"0") + ":00");
+    var rows = hours;  // только реальные времена начала (бывают и :30)
     var wrap = el("div","sched"), tb = document.createElement("table");
     var tr = document.createElement("tr"); tr.appendChild(el("th","tcol","Время"));
     list.forEach(function(t){ var th = el("th"); var hd = el("div","th-t"); hd.appendChild(avatar(t)); var nm = el("div"); nm.appendChild(el("b",null,t.name)); nm.appendChild(el("small",null,t.grade||"")); hd.appendChild(nm); th.appendChild(hd); tr.appendChild(th) });

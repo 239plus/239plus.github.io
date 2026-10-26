@@ -93,6 +93,9 @@ ol{padding-left:20px}
       sha = j.sha; var src = b64d(j.content);
       head = src.slice(0, src.indexOf("const SCHEDULE"));
       data = new Function(src + "; return SCHEDULE;")();
+      // нестандартные времена (например 17:30) тоже показываем в сетке
+      Object.keys(data).forEach(function(n){ Object.keys(data[n].week || {}).forEach(function(d){ data[n].week[d].forEach(function(h){ if (HOURS.indexOf(h) < 0) HOURS.push(h) }) }) });
+      HOURS.sort();
       $("login").hidden = true; $("app").hidden = false;
       var sel = $("tutor"); sel.innerHTML = "";
       Object.keys(data).forEach(function(n){ sel.appendChild(new Option(n, n)) });
