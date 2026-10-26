@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>239+ — печать</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<!-- Источник PDF: ?g=8&n=5&mode=slides|tutor|hw. Собирает tools/build-pdfs.sh -->
+<style>
+*{box-sizing:border-box}
+body{margin:0;font:500 16px/1.5 Manrope,system-ui,sans-serif;color:#16171d;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+h1,h2{font-family:Unbounded,Manrope,sans-serif;letter-spacing:-.02em;margin:0 0 .5em;text-wrap:balance}
+.kind{font:800 14px/1 Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ff6a3d;margin-bottom:14px}
+.box{background:#efece4;border-radius:14px;padding:.5em .9em;margin:.5em 0}
+.ans{margin-top:.8em;border-left:4px solid #2e9e4f;background:#dff3e5;border-radius:0 12px 12px 0;padding:.5em .9em}
+/* слайды 16:9 */
+body.slides{background:#f6f4ef}
+body.slides .page{width:1280px;height:720px;padding:64px 80px;display:flex;flex-direction:column;justify-content:center;break-after:page;position:relative;font-size:34px;overflow:hidden}
+body.slides .page h1{font-size:76px;line-height:1.08}
+body.slides .page h2{font-size:50px;line-height:1.15}
+body.slides .page .foot{position:absolute;left:80px;right:80px;bottom:28px;display:flex;justify-content:space-between;font-size:16px;color:#5d606b;font-weight:700}
+body.slides .page .foot b{color:#ff6a3d;font-family:Unbounded,sans-serif}
+body.slides .page p,body.slides .page li{margin:.3em 0}
+/* A4 */
+body.a4 .page{width:210mm;padding:16mm 16mm 14mm;font-size:13.5px}
+body.a4 h1{font-size:24px}
+body.a4 h2{font-size:16px;margin:1.2em 0 .4em}
+.meta{color:#5d606b;font-size:12px;margin-bottom:12px}
+.lead{background:#efece4;border-radius:10px;padding:10px 12px;margin:8px 0}
+.item{display:grid;grid-template-columns:44px 1fr;gap:10px;padding:10px 0;border-top:1px solid #dedad0;break-inside:avoid}
+.item .no{font:700 13px Unbounded,sans-serif;color:#ff6a3d}
+.item .no small{display:block;font:600 11px Manrope,sans-serif;color:#5d606b}
+.item .what{font-weight:700}
+.item .say{margin-top:4px}
+.item .a{margin-top:4px;color:#1f6e37}
+ol.hw{padding-left:22px}
+ol.hw li{margin:0 0 70px;font-size:16px}
+.hw-head{display:flex;justify-content:space-between;align-items:end;border-bottom:2px solid #16171d;padding-bottom:8px;margin-bottom:16px}
+.name{font-size:13px;color:#5d606b}
+.katex{font-size:1.05em}
+</style>
+</head>
+<body>
+<div id="out"></div>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search), g = q.get("g"), n = +q.get("n"), mode = q.get("mode") || "slides";
+  var s = document.createElement("script");
+  s.src = "data/" + g + "-" + String(n).padStart(2, "0") + ".js";
+  s.onload = build; document.head.appendChild(s);
+  function strip(h){ var d = document.createElement("div"); d.innerHTML = h || ""; return d.innerHTML }
+  function build(){
+    var D = DECK, out = document.getElementById("out"), html = "";
+    var label = D.grade + " · занятие " + D.n;
+    if (mode === "slides") {
+      document.body.className = "slides";
+      D.slides.forEach(function(S){
+        var steps = S.steps || [], states = [];
+        // каждое состояние показа — отдельная страница, как при клике в презентации
+        states.push(0);
+        for (var k = 1; k <= steps.length; k++) states.push(k);
+        if (S.ans) states.push(steps.length + 1);
+        if (!steps.length && !S.ans) states = [0];
+        states.forEach(function(st){
+          html += "<div class='page'>" + (S.k ? "<div class='kind'>" + S.k + "</div>" : "") +
+            (S.title ? "<h1>" + S.h + "</h1>" : S.h ? "<h2>" + S.h + "</h2>" : "") + (S.b || "") +
+            steps.slice(0, st).map(function(x){ return "<div>" + x + "</div>" }).join("") +
+            (S.ans && st > steps.length ? "<div class='ans'><b>Ответ.</b> " + S.ans + "</div>" : "") +
+            "<div class='foot'><span><b>239+</b> &nbsp;" + label + "</span><span>" + D.title + "</span></div></div>";
+        });
+      });
+    } else if (mode === "tutor") {
+      document.body.className = "a4";
+      var total = D.slides.reduce(function(a, S){ return a + (S.min || 0) }, 0), t = 0;
+      html += "<div class='page'><div class='kind'>Конспект репетитора · не показывать ученику</div><h1>" + D.title + "</h1>" +
+        "<div class='meta'>" + label + " · " + total + " минут · " + D.slides.length + " слайдов</div>" +
+        "<div class='lead'><b>Цель.</b> " + D.goal + "</div>" +
+        (D.why ? "<div class='lead'><b>Зачем.</b> " + D.why + "</div>" : "") +
+        (D.need ? "<div class='lead'><b>Что нужно знать заранее.</b> " + D.need + "</div>" : "") +
+        "<h2>Ход занятия</h2>";
+      D.slides.forEach(function(S, i){
+        var from = t; t += S.min || 0;
+        html += "<div class='item'><div class='no'>" + (i + 1) + "<small>" + from + "–" + t + " мин</small></div><div>" +
+          "<div class='what'>" + (S.k ? S.k + ": " : "") + S.h + "</div>" +
+          (S.b && !S.title ? "<div>" + S.b + "</div>" : "") +
+          (S.steps ? "<div>" + S.steps.join(" ") + "</div>" : "") +
+          (S.ans ? "<div class='a'><b>Ответ:</b> " + S.ans + "</div>" : "") +
+          (S.say ? "<div class='say'><b>Говорить:</b> " + S.say + "</div>" : "") + "</div></div>";
+      });
+      if (D.hw) html += "<h2>Ответы к домашнему заданию</h2><ol>" + D.hw.map(function(x){ return "<li>" + x[0] + " → <b>" + x[1] + "</b></li>" }).join("") + "</ol>";
+      html += "</div>";
+    } else {
+      document.body.className = "a4";
+      html += "<div class='page'><div class='hw-head'><div><div class='kind'>Домашнее задание · " + label + "</div><h1>" + D.title + "</h1></div><div class='name'>Имя: ____________________</div></div>" +
+        "<ol class='hw'>" + (D.hw || []).map(function(x){ return "<li>" + x[0] + "</li>" }).join("") + "</ol></div>";
+    }
+    var ps = document.createElement("style");
+    ps.textContent = mode === "slides" ? "@page{size:1280px 720px;margin:0}" : "@page{size:A4;margin:0}";
+    document.head.appendChild(ps);
+    out.innerHTML = html;
+    renderMathInElement(out, {delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}], throwOnError: false});
+    document.fonts.ready.then(function(){ document.body.setAttribute("data-ready", "1") });
+  }
+})();
+</script>
+</body>
+</html>
