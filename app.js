@@ -1,5 +1,5 @@
 (function(){
-  var DIR = {olymp:"Олимпиады", entry:"Поступление", school:"Школьная", ege:"ЕГЭ", olymp911:"Олимпиады 9–11"};
+  var DIR = {olymp:"Олимпиады", entry:"Поступление", school:"Школьная программа", ege:"ЕГЭ", olymp911:"Олимпиады 9–11"};
   var PAL = ["#ff6a3d","#2f5bea","#14a37f","#a24bd6","#e0a21b","#d6456c"];
 
   function hash(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))|0;return Math.abs(h)}
