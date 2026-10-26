@@ -83,6 +83,7 @@ textarea{resize:vertical;min-height:60px}
 .lb h4{margin:8px 0 2px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .lb ul{margin:0;padding-left:18px}
 .lb textarea{margin-top:6px}
+.btn.slides{display:inline-block;margin-top:12px;text-decoration:none}
 .note-flag{font-size:12px;color:var(--accent);font-weight:700}
 footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);font-size:14px}
 @media print{header,.side,.tabs,.chk,textarea,.lb h4.n{display:none!important}.grid{display:block}.lb{display:block!important;padding-left:14px}.lesson{break-inside:avoid;box-shadow:none}body{background:#fff;color:#000}}
@@ -197,7 +198,8 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;color:var(--muted);f
       head.onclick = function(){ el.classList.toggle("open") };
       var body = h("div", "lb",
         "<h4>Что объяснить</h4><ul>" + L.th.map(function(x){ return "<li>" + esc(x) + "</li>" }).join("") + "</ul>" +
-        "<h4>Что решать</h4><ul>" + L.pr.map(function(x){ return "<li>" + esc(x) + "</li>" }).join("") + "</ul>");
+        "<h4>Что решать</h4><ul>" + L.pr.map(function(x){ return "<li>" + esc(x) + "</li>" }).join("") + "</ul>" +
+        "<a class='btn slides' href='slides/?g=" + st.grade + "&n=" + (i + 1) + "' target='_blank' rel='noopener'>▶ Презентация занятия</a>");
       if (s) {
         body.appendChild(h("h4", "n", "Заметка по ученику"));
         var ta = h("textarea"); ta.value = note || ""; ta.placeholder = "Что получилось, что задано домой…";

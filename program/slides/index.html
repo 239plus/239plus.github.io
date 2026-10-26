@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>239+ — занятие</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root{--bg:#f6f4ef;--surface:#fff;--surface2:#efece4;--ink:#16171d;--muted:#5d606b;--line:#dedad0;--accent:#ff6a3d;--accent-ink:#fff;--accent-soft:#ffe3d8;--ok:#2e9e4f;--ok-soft:#dff3e5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1116;--surface:#171a21;--surface2:#1e222b;--ink:#f1efe9;--muted:#a3a7b3;--line:#2a2f3a;--accent:#ff7a4f;--accent-ink:#14100d;--accent-soft:#3a2219;--ok:#5cc97a;--ok-soft:#16301f}}
+:root[data-theme="dark"]{--bg:#0f1116;--surface:#171a21;--surface2:#1e222b;--ink:#f1efe9;--muted:#a3a7b3;--line:#2a2f3a;--accent:#ff7a4f;--accent-ink:#14100d;--accent-soft:#3a2219;--ok:#5cc97a;--ok-soft:#16301f}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:500 clamp(17px,2.3vw,26px)/1.5 Manrope,system-ui,sans-serif;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);font-size:14px}
+.bar a{color:var(--muted);text-decoration:none;font-weight:700}
+.bar .t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.bar button{font:700 14px Manrope,sans-serif;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:6px 10px;cursor:pointer}
+.stage{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;min-height:0}
+.slide{width:min(1100px,100%);max-height:100%;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(22px,4vw,56px);box-shadow:0 10px 40px rgba(0,0,0,.08)}
+.kind{font:800 12px/1 Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.kind.task{color:var(--ok)}
+h1,h2{font-family:Unbounded,Manrope,sans-serif;letter-spacing:-.02em;margin:0 0 .5em;text-wrap:balance}
+h1{font-size:clamp(28px,5vw,58px);line-height:1.08}
+h2{font-size:clamp(22px,3.4vw,40px);line-height:1.15}
+.slide p{margin:.4em 0;text-wrap:pretty}
+.slide ul,.slide ol{margin:.4em 0;padding-left:1.2em}
+.slide li{margin:.3em 0}
+.box{background:var(--surface2);border-radius:14px;padding:.6em .9em;margin:.6em 0}
+.step{opacity:0;transform:translateY(6px);transition:.25s;pointer-events:none}
+.step.on{opacity:1;transform:none;pointer-events:auto}
+.ans{margin-top:.8em;border-left:4px solid var(--ok);background:var(--ok-soft);border-radius:0 12px 12px 0;padding:.5em .9em}
+.hint{color:var(--muted);font-size:.8em}
+.nav{display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px 16px}
+.nav button{font:700 16px Manrope,sans-serif;border:0;border-radius:999px;padding:12px 22px;cursor:pointer;background:var(--surface2);color:var(--ink)}
+.nav button.go{background:var(--accent);color:var(--accent-ink)}
+.nav .count{min-width:70px;text-align:center;color:var(--muted);font-size:14px;font-weight:700}
+.katex{font-size:1.05em}
+@media print{.bar,.nav{display:none}.stage{display:block}.slide{box-shadow:none;break-after:page;margin:0 auto 12px;max-height:none}.step{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="bar"><a href="../">← Программа</a><span class="t" id="title"></span><button id="tutor" title="Показывать ответы сразу (режим подготовки)">Ответы: скрыты</button><button id="fs">На весь экран</button></div>
+<div class="stage" id="stage"></div>
+<div class="nav"><button id="prev">←</button><span class="count" id="count"></span><button class="go" id="next">Дальше →</button></div>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search), g = q.get("g"), n = +q.get("n");
+  var id = g + "-" + String(n).padStart(2, "0");
+  var s = document.createElement("script");
+  s.src = "data/" + id + ".js";
+  s.onload = start;
+  s.onerror = function(){ document.getElementById("stage").innerHTML = "<div class='slide'><h2>Презентация к этому занятию пока не готова</h2><p class='hint'>Занятие " + n + ", " + g + " класс.</p></div>" };
+  document.head.appendChild(s);
+
+  var i = Math.max(0, (+q.get("s") || 1) - 1), step = 0, slides, showAll = q.get("all") === "1";
+  // Слайд: {k: подпись, h: заголовок, b: html, steps: [html по кликам], ans: html (ответ по кнопке)}
+  function render(){
+    var S = slides[i], st = document.getElementById("stage");
+    var steps = (S.steps || []).map(function(x, j){ return "<div class='step" + (showAll || j < step ? " on" : "") + "'>" + x + "</div>" }).join("");
+    var ans = S.ans ? "<div class='step" + (showAll || step > (S.steps || []).length ? " on" : "") + "'><div class='ans'><b>Ответ.</b> " + S.ans + "</div></div>" : "";
+    st.innerHTML = "<div class='slide'>" + (S.k ? "<div class='kind" + (/Задача|Сам/.test(S.k) ? " task" : "") + "'>" + S.k + "</div>" : "") +
+      (S.title ? "<h1>" + S.h + "</h1>" : S.h ? "<h2>" + S.h + "</h2>" : "") + (S.b || "") + steps + ans + "</div>";
+    renderMathInElement(st, {delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}], throwOnError: false});
+    document.getElementById("count").textContent = (i + 1) + " / " + slides.length;
+    var left = total(S) - step;
+    document.getElementById("next").textContent = !showAll && left > 0 ? (left === 1 && S.ans ? "Ответ" : "Показать") : "Дальше →";
+  }
+  function total(S){ return (S.steps || []).length + (S.ans ? 1 : 0) }
+  function next(){ var S = slides[i]; if (!showAll && step < total(S)) step++; else if (i < slides.length - 1) { i++; step = 0 } render() }
+  function prev(){ if (step > 0 && !showAll) step = 0; else if (i > 0) { i--; step = 0 } render() }
+  function start(){
+    slides = DECK.slides;
+    document.title = DECK.title + " — 239+";
+    document.getElementById("title").textContent = DECK.grade + " · занятие " + n + " · " + DECK.title;
+    document.getElementById("next").onclick = next;
+    document.getElementById("prev").onclick = prev;
+    document.addEventListener("keydown", function(e){
+      if (["ArrowRight", " ", "PageDown", "Enter"].indexOf(e.key) >= 0) { e.preventDefault(); next() }
+      if (["ArrowLeft", "PageUp", "Backspace"].indexOf(e.key) >= 0) { e.preventDefault(); prev() }
+    });
+    document.getElementById("tutor").onclick = function(){ showAll = !showAll; this.textContent = showAll ? "Ответы: видны" : "Ответы: скрыты"; render() };
+    if (showAll) document.getElementById("tutor").textContent = "Ответы: видны";
+    document.getElementById("fs").onclick = function(){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen() };
+    render();
+  }
+})();
+</script>
+</body>
+</html>
