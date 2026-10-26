@@ -223,3 +223,5 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
 .c-busy .blk{background:repeating-linear-gradient(135deg,var(--busy-soft) 0 6px,color-mix(in srgb,var(--busy-soft) 45%,transparent) 6px 12px);color:var(--busy);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--busy) 50%,transparent)}
 .c-busy b{font:800 14px Manrope}
 @media (max-width:560px){.sched th,.sched td{min-width:118px}.sched .tcol{min-width:52px;width:52px}.th-t .ava{display:none}}
+.c-past .blk{background:var(--surface2);color:var(--muted);box-shadow:none}
+.days .day.past{opacity:.6}

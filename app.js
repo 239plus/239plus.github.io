@@ -80,14 +80,16 @@
   var cat = "olymp", sel = {}, focus = null;
   function msk(){ var d = new Date(Date.now() + (new Date().getTimezoneOffset() + 180) * 60000); return d }  // «сейчас» по Москве
   function iso(d){ return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0") }
-  function days(){ var out = [], now = msk(); for (var i = 0; i < BOOK_DAYS; i++){ var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i); out.push(d) } return out }
+  // 3 дня назад … неделя вперёд
+  function days(){ var out = [], now = msk(); for (var i = -3; i <= 7; i++){ out.push(new Date(now.getFullYear(), now.getMonth(), now.getDate() + i)) } return out }
   function slotsFor(name, d){
     var S = SCHEDULE[name]; if (!S) return [];
     if ((S.off||[]).indexOf(name + "|" + iso(d)) >= 0) return [];
-    var now = msk(), today = iso(now) === iso(d);
-    return ((S.week||{})[WD[d.getDay()]] || []).filter(function(h){
-      if (!today) return true; var p = h.split(":"); return +p[0] * 60 + +p[1] > now.getHours() * 60 + now.getMinutes() + 60;
-    }).map(function(h){ return {h: h, busy: (S.busy||[]).indexOf(name + "|" + iso(d) + "|" + h) >= 0} });
+    var now = msk(), nowM = now.getHours() * 60 + now.getMinutes();
+    return ((S.week||{})[WD[d.getDay()]] || []).map(function(h){
+      var p = h.split(":"), past = iso(d) < iso(now) || (iso(d) === iso(now) && +p[0] * 60 + +p[1] <= nowM);
+      return {h: h, past: past, busy: (S.busy||[]).indexOf(name + "|" + iso(d) + "|" + h) >= 0};
+    });
   }
   function renderCats(){
     var c = document.getElementById("cats"); c.innerHTML = "";
@@ -101,13 +103,14 @@
     if (focus) list.sort(function(a,b){ return (b.name === focus) - (a.name === focus) });
     if (!list.length) { box.appendChild(el("p","empty","В этом направлении скоро появятся репетиторы.")); return }
     var ds = days(), has = function(d){ return list.some(function(t){ return slotsFor(t.name, d).length }) };
-    if (!day || !has(day)) day = ds.filter(has)[0] || ds[0];
+    if (!day) day = ds[3];  // сегодня
     // лента дней
     var strip = el("div","days");
     ds.forEach(function(d){
       var b = el("button","day",WD[d.getDay()]); b.type = "button";
       b.appendChild(el("b",null,String(d.getDate()))); b.appendChild(el("small",null,MON[d.getMonth()]));
-      var free = list.some(function(t){ return slotsFor(t.name, d).some(function(x){ return !x.busy }) });
+      var free = list.some(function(t){ return slotsFor(t.name, d).some(function(x){ return !x.busy && !x.past }) });
+      if (iso(d) < iso(msk())) b.classList.add("past");
       if (free) b.appendChild(el("span","dot"));
       b.setAttribute("aria-pressed", iso(d) === iso(day));
       b.onclick = function(){ day = d; renderBook() };
@@ -117,7 +120,9 @@
     // таблица: строки — часы, столбцы — репетиторы
     var map = {}, hours = [];
     list.forEach(function(t){ map[t.name] = {}; slotsFor(t.name, day).forEach(function(x){ map[t.name][x.h] = x; if (hours.indexOf(x.h) < 0) hours.push(x.h) }) });
-    if (!hours.length) { box.appendChild(el("p","empty","На этот день свободных окон нет — выберите день с зелёной точкой.")); return }
+    // шкала одинаковая каждый день: от самого раннего до самого позднего окна недели
+    list.forEach(function(t){ var w = (SCHEDULE[t.name] || {}).week || {}; Object.keys(w).forEach(function(k){ w[k].forEach(function(h){ if (hours.indexOf(h) < 0) hours.push(h) }) }) });
+    if (!hours.length) { box.appendChild(el("p","empty","Свободные окна скоро появятся.")); return }
     hours.sort();
     // сплошная шкала по 30 минут; занятие — блок на 2 строки (60 мин)
     var mins = function(h){ var p = h.split(":"); return +p[0] * 60 + +p[1] }, fmt = function(m){ return String(Math.floor(m / 60)).padStart(2,"0") + ":" + String(m % 60).padStart(2,"0") };
@@ -137,7 +142,8 @@
         else {
           td.rowSpan = 2; skip[t.name + fmt(mins(r) + 30)] = 1;
           var span = r + "–" + fmt(mins(r) + 60);
-          if (x.busy) { td.className = "c-busy"; var d = el("div","blk"); d.appendChild(el("small",null,span)); d.appendChild(el("b",null,"занято")); td.appendChild(d) }
+          if (x.past && !x.busy) { td.className = "c-busy c-past"; var pd = el("div","blk"); pd.appendChild(el("small",null,span)); pd.appendChild(el("b",null,"прошло")); td.appendChild(pd) }
+          else if (x.busy) { td.className = "c-busy"; var d = el("div","blk"); d.appendChild(el("small",null,span)); d.appendChild(el("b",null,"занято")); td.appendChild(d) }
           else {
             td.className = "c-slot";
             var b = el("button","c-free"); b.type = "button"; b.setAttribute("aria-label", t.name + ", " + span + ", свободно");
