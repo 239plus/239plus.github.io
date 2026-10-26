@@ -239,3 +239,7 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
 .bk-t{min-width:0}
 .bk-t .sched{max-width:100%}
 .chip{font-weight:800;color:var(--ink)}
+.stats.ach2{grid-template-columns:1fr 1fr}
+.stats.ach2 .stat{padding-left:0}
+.stats.ach2 .stat+.stat{padding-left:28px}
+@media (max-width:760px){.stats.ach2 .stat:nth-child(n+3){border-top:0}}
