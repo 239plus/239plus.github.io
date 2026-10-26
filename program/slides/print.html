@@ -101,7 +101,16 @@ ol.hw li{margin:0 0 70px;font-size:16px}
     document.head.appendChild(ps);
     out.innerHTML = html;
     renderMathInElement(out, {delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}], throwOnError: false});
-    document.fonts.ready.then(function(){ document.body.setAttribute("data-ready", "1") });
+    document.fonts.ready.then(function(){
+      // список страниц, где содержимое не влезло (для проверки сборки)
+      var bad = []; document.querySelectorAll(".page").forEach(function(p, k){
+        // плотный слайд: уменьшаем шрифт, пока не влезет (до 60%)
+        for (var f = 34; mode === "slides" && p.scrollHeight > p.clientHeight + 2 && f > 20; f -= 2) p.style.fontSize = f + "px";
+        if (p.scrollHeight > p.clientHeight + 2) bad.push(k + 1);
+      });
+      document.body.setAttribute("data-overflow", bad.join(","));
+      document.body.setAttribute("data-ready", "1");
+    });
   }
 })();
 </script>

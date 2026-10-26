@@ -8,7 +8,7 @@ SL=$ROOT/program/slides; OUT=$ROOT/program/files; mkdir -p "$OUT"
 SCR=/tmp/claude-1000/-home-claude-work/08ba3e6f-3c21-4786-b586-981793a0d2de/scratchpad
 CH=$(find ~/.cache/ms-playwright/chromium_headless_shell-1248 -name chrome-headless-shell -type f | head -1)
 export LD_LIBRARY_PATH=$(cat $SCR/libpath.txt 2>/dev/null || cat ~/.cache/pdf-libpath.txt)
-PORT=8766; (cd "$SL" && exec python3 -m http.server $PORT >/dev/null 2>&1) & SRV=$!; trap "kill $SRV" EXIT; sleep 1
+PORT=${PORT:-8766}; (cd "$SL" && exec python3 -m http.server $PORT >/dev/null 2>&1) & SRV=$!; trap "kill $SRV" EXIT; sleep 1
 ids=("$@"); [ ${#ids[@]} -eq 0 ] && ids=($(cd "$SL/data" && ls *.js | sed 's/\.js$//'))
 for id in "${ids[@]}"; do
   g=${id%-*}; n=$((10#${id#*-}))
