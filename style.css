@@ -21,7 +21,7 @@ a{color:inherit}
 h1,h2,h3{font-family:Unbounded,Manrope,sans-serif;letter-spacing:-.02em;margin:0;text-wrap:balance}
 h3{font-family:Manrope,system-ui,sans-serif;font-weight:800;letter-spacing:-.01em}
 p,li,.lead{text-wrap:pretty}
-h2{font-size:clamp(28px,4.2vw,44px);font-weight:700;line-height:1.08}
+h2,.h2{font-size:clamp(28px,4.2vw,44px);font-weight:700;line-height:1.08}
 .eyebrow{font:600 13px/1 Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
 .lead{color:var(--muted);font-size:18px;max-width:620px}
 section{padding:88px 0}
