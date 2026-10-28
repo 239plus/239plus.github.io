@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <title>239+ — моё расписание</title>
 <!-- Мини-приложение Telegram: открывается из бота @plus239_bot кнопкой «📅 Моё расписание».
-     Текущее расписание приходит в #хэше от бота, сохранение — Telegram.WebApp.sendData → бот проверяет, кто это, и коммитит schedule.js. -->
+     Текущее расписание приходит от бота в ?s=, сохранение — Telegram.WebApp.sendData → бот проверяет, кто это, и коммитит schedule.js. -->
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -62,9 +62,10 @@ h1{font:700 21px/1.15 Unbounded,sans-serif;margin:2px 0 4px;letter-spacing:-.02e
   var HOURS = []; for (var h = 9; h <= 21; h++) HOURS.push(h);
   var $ = function(id){ return document.getElementById(id) };
   if (tg) { tg.ready(); tg.expand(); document.documentElement.setAttribute("data-theme", tg.colorScheme === "dark" ? "dark" : "light") }
-  // #хэш от бота: base64url(JSON {n: имя, f: {"ГГГГ-ММ-ДД": [17, 18]}, b: {...}})
+  // ?s= от бота: base64url(JSON {n: имя, f: {"ГГГГ-ММ-ДД": [17, 18]}, b: {...}})
   var S;
-  try { var raw = location.hash.slice(1).replace(/-/g, "+").replace(/_/g, "/"); S = JSON.parse(decodeURIComponent(escape(atob(raw)))) } catch(e) {}
+  // Telegram дописывает свои параметры в #хэш, поэтому данные от бота — в ?s=
+  try { var raw = (new URLSearchParams(location.search).get("s") || "").replace(/-/g, "+").replace(/_/g, "/"); S = JSON.parse(decodeURIComponent(escape(atob(raw)))) } catch(e) {}
   if (!S || !S.n) { document.querySelector(".wrap").innerHTML = "<p class='err muted'>Откройте эту страницу из бота @plus239_bot: /raspisanie → «📅 Моё расписание».</p>"; return }
   $("who").textContent = S.n;
   // состояние: 0 закрыто, 1 свободно, 2 занято
