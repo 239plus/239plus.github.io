@@ -1,6 +1,0 @@
-User-agent: *
-Disallow: /admin/
-Disallow: /tutor/
-Disallow: /program/
-
-Sitemap: https://239plus.github.io/sitemap.xml
