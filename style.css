@@ -249,3 +249,18 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
 .cats{display:grid;grid-template-columns:minmax(0,560px);overflow:visible;gap:8px}
 .cats .cat{border-radius:14px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .cats .cat small{margin:0;white-space:nowrap}
+/* договор-оферта */
+.oferta .wrap{max-width:820px}
+.oferta .meta{color:var(--muted);margin:6px 0 10px;font-weight:600}
+.oferta h2{font-size:clamp(18px,2.4vw,22px);margin:34px 0 10px}
+.oferta p,.oferta li{line-height:1.6;margin:0 0 10px}
+.oferta ul{padding-left:22px;margin:0 0 10px}
+.oferta .fill{background:#ffe9a8;color:#5b4300;border-radius:4px;padding:0 4px;font-weight:700}
+.oferta .req{background:var(--surface2);border-radius:16px;padding:18px 20px}
+.oferta .req p{margin:0 0 6px}
+.dlg .agree{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;font-weight:600;cursor:pointer;line-height:1.45}
+.dlg .agree input{width:20px;height:20px;margin:1px 0 0;flex:none;accent-color:var(--accent)}
+.dlg .agree a{color:var(--accent)}
+.btn.off{opacity:.45;pointer-events:none}
+.foot-links{display:flex;gap:16px;flex-wrap:wrap}
+.foot-links a{color:var(--muted)}

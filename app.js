@@ -164,8 +164,17 @@
     go.href = "https://t.me/" + BOOK_CONTACT + "?text=" + encodeURIComponent(text); go.target = "_blank"; go.rel = "noopener";
     var cp = el("button","btn btn-ghost","Скопировать текст"); cp.type = "button";
     cp.onclick = function(){ (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function(){ cp.textContent = "Скопировано ✓" }, function(){ cp.textContent = "Выделите текст выше" }) };
+    // согласие с офертой (ст. 438 ГК РФ): без галочки кнопки неактивны, в сообщение уходит строка о согласии
+    var ag = el("label","agree"), cb = document.createElement("input"); cb.type = "checkbox";
+    var at = el("span"); at.innerHTML = 'Я совершеннолетний ученик или законный представитель ученика, ознакомился(-лась) с <a href="oferta.html" target="_blank" rel="noopener">договором-офертой</a> и принимаю его условия';
+    ag.appendChild(cb); ag.appendChild(at);
+    var full = text + " С условиями договора-оферты (239plus.github.io/oferta.html) ознакомлен(а) и согласен(на).";
+    go.href = "https://t.me/" + BOOK_CONTACT + "?text=" + encodeURIComponent(full);
+    cp.onclick = function(){ (navigator.clipboard ? navigator.clipboard.writeText(full) : Promise.reject()).then(function(){ cp.textContent = "Скопировано ✓" }, function(){ cp.textContent = "Выделите текст выше" }) };
+    function sync(){ go.classList.toggle("off", !cb.checked); cp.classList.toggle("off", !cb.checked); go.setAttribute("aria-disabled", !cb.checked) }
+    cb.onchange = sync; sync();
     acts.appendChild(go); acts.appendChild(cp);
-    openDlg([h3, p, bx, acts]);
+    openDlg([h3, p, bx, ag, acts]);
   }
   function pickTutor(t){ if ((t.directions||[]).indexOf(cat) < 0) cat = t.directions[0]; focus = t.name; renderBook() }
   if (document.getElementById("bk")) {
