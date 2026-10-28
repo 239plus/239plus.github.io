@@ -166,7 +166,7 @@
     cp.onclick = function(){ (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function(){ cp.textContent = "Скопировано ✓" }, function(){ cp.textContent = "Выделите текст выше" }) };
     // согласие с офертой (ст. 438 ГК РФ): без галочки кнопки неактивны, в сообщение уходит строка о согласии
     var ag = el("label","agree"), cb = document.createElement("input"); cb.type = "checkbox";
-    var at = el("span"); at.innerHTML = 'Я совершеннолетний ученик или законный представитель ученика, ознакомился(-лась) с <a href="oferta.html" target="_blank" rel="noopener">договором-офертой</a> и принимаю его условия';
+    var at = el("span"); at.innerHTML = 'Мне есть 18 лет, я ознакомился(-лась) с <a href="oferta.html" target="_blank" rel="noopener">договором-офертой</a> и принимаю его условия';
     ag.appendChild(cb); ag.appendChild(at);
     var full = text + " С условиями договора-оферты (239plus.github.io/oferta.html) ознакомлен(а) и согласен(на).";
     go.href = "https://t.me/" + BOOK_CONTACT + "?text=" + encodeURIComponent(full);
