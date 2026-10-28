@@ -139,9 +139,10 @@ ol{padding-left:20px}
       // прошедшие даты чистим, чтобы файл не рос
       var busy = (t.busy || []).filter(function(k){ return k.split("|")[1] >= today }).sort();
       var off = (t.off || []).filter(function(k){ return k.split("|")[1] >= today }).sort();
+      var extra = (t.extra || []).filter(function(k){ return k.split("|")[1] >= today }).sort();
       var week = {}; WD.forEach(function(d){ if (t.week && t.week[d] && t.week[d].length) week[d] = t.week[d] });
       out += "  " + JSON.stringify(n) + ": {\n    week: " + JSON.stringify(week) +
-        ",\n    busy: " + JSON.stringify(busy) + ",\n    off: " + JSON.stringify(off) + ",\n  },\n";
+        ",\n    busy: " + JSON.stringify(busy) + ",\n    off: " + JSON.stringify(off) + ",\n    extra: " + JSON.stringify(extra) + ",\n  },\n";
     });
     return out + "};\n";
   }

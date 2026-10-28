@@ -86,7 +86,10 @@
     var S = SCHEDULE[name]; if (!S) return [];
     if ((S.off||[]).indexOf(name + "|" + iso(d)) >= 0) return [];
     var now = msk(), nowM = now.getHours() * 60 + now.getMinutes();
-    return ((S.week||{})[WD[d.getDay()]] || []).map(function(h){
+    // постоянные окна дня недели + разовые окна на эту дату (extra: "Имя|ГГГГ-ММ-ДД|ЧЧ:ММ")
+    var hs = ((S.week||{})[WD[d.getDay()]] || []).slice();
+    (S.extra||[]).forEach(function(k){ var p = k.split("|"); if (p[1] === iso(d) && hs.indexOf(p[2]) < 0) hs.push(p[2]) });
+    return hs.sort().map(function(h){
       var p = h.split(":"), past = iso(d) < iso(now) || (iso(d) === iso(now) && +p[0] * 60 + +p[1] <= nowM);
       return {h: h, past: past, busy: (S.busy||[]).indexOf(name + "|" + iso(d) + "|" + h) >= 0};
     });
@@ -110,6 +113,7 @@
       var who = el("div"); who.appendChild(el("h3",null,t.name)); who.appendChild(el("div","sub",t.grade||"")); head.appendChild(who); w.appendChild(head);
       var hours = [], wk = (SCHEDULE[t.name] || {}).week || {};
       Object.keys(wk).forEach(function(k){ wk[k].forEach(function(h){ if (hours.indexOf(h) < 0) hours.push(h) }) });
+      ((SCHEDULE[t.name] || {}).extra || []).forEach(function(k){ var h = k.split("|")[2]; if (hours.indexOf(h) < 0) hours.push(h) });
       if (!hours.length) { w.appendChild(el("p","empty","Свободные окна скоро появятся.")); box.appendChild(w); return }
       hours.sort();
       var rows = []; for (var m = Math.floor(mins(hours[0]) / 30) * 30; m < mins(hours[hours.length-1]) + 60; m += 30) rows.push(fmt(m));
