@@ -264,3 +264,17 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
 .btn.off{opacity:.45;pointer-events:none}
 .foot-links{display:flex;gap:16px;flex-wrap:wrap}
 .foot-links a{color:var(--muted)}
+
+/* программа поступления на главной */
+.prog-grades{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:32px}
+.pg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.pg b{display:block;font:700 18px/1.2 Unbounded,Manrope,sans-serif}
+.pg span{display:block;color:var(--accent);font-weight:700;font-size:13px;margin:6px 0 8px}
+.pg p{margin:0;color:var(--muted);font-size:14.5px}
+.prog-steps{margin-top:20px}
+.dir p a{color:var(--accent);font-weight:700;text-decoration:none;white-space:nowrap}
+@media (max-width:980px){.prog-grades{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.prog-grades{grid-template-columns:1fr}}
+.steps.prog-steps{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:900px){.steps.prog-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.steps.prog-steps{grid-template-columns:1fr}}
