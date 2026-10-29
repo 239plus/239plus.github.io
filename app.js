@@ -207,16 +207,3 @@
   } else document.querySelectorAll(".reveal").forEach(function(x){x.classList.add("in")});
 })();
 
-// Программа поступления на главной: скрыта, открывается по нажатию на карточку «Поступление в 239» (или по ссылке #program)
-(function(){
-  var sec = document.getElementById("program"), card = document.getElementById("dir-entry");
-  if (!sec || !card) return;
-  var btn = card.querySelector(".prog-toggle");
-  function show(open, scroll){
-    sec.hidden = !open; btn.setAttribute("aria-expanded", open);
-    if (open) { sec.querySelectorAll(".reveal").forEach(function(x){ x.classList.add("in") }); if (scroll) sec.scrollIntoView({behavior: "smooth", block: "start"}) }
-  }
-  card.addEventListener("click", function(e){ if (e.target.closest("a")) return; show(sec.hidden, true) });
-  if (location.hash === "#program") show(true, true);
-  addEventListener("hashchange", function(){ if (location.hash === "#program") show(true, true) });
-})();
