@@ -283,3 +283,6 @@ footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
 .prog-toggle[aria-expanded="true"]{background:var(--accent);color:var(--accent-ink)}
 .prog-toggle[aria-expanded="true"] span{transform:rotate(180deg)}
 #program{scroll-margin-top:120px;padding-top:24px}
+.prog-grades.pg3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:980px){.prog-grades.pg3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.prog-grades.pg3{grid-template-columns:1fr}}
