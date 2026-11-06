@@ -4,7 +4,7 @@ const CONTACT_URL = "https://t.me/plus239_bot";
 // Карточки репетиторов. Новых добавляет tools/csv2tutors.py из ответов Google-формы.
 // photo: путь к файлу в img/ или "" — тогда рисуется аватар с инициалами.
 const TUTORS = [
-  {name: "Данила Луконин",
+  {name: "Даниил Луконин",
     grade: "10 класс, ФМЛ 239",
     photo: "",
     achievements: [
