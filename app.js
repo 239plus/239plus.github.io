@@ -107,6 +107,7 @@
     if (focus) list.sort(function(a,b){ return (b.name === focus) - (a.name === focus) });
     if (!list.length) { box.appendChild(el("p","empty","В этом направлении скоро появятся репетиторы.")); return }
     var ds = days(), today = iso(msk());
+    renderFind(list, ds, today);
     var mins = function(h){ var p = h.split(":"); return +p[0] * 60 + +p[1] }, fmt = function(m){ return String(Math.floor(m / 60)).padStart(2,"0") + ":" + String(m % 60).padStart(2,"0") };
     list.forEach(function(t){
       var w = el("div","bk-t"), head = el("div","bk-head"); head.appendChild(avatar(t));
@@ -154,6 +155,54 @@
       setTimeout(function(){ var th = wrap.querySelector("th.today"), tc = wrap.querySelector("th.tcol"); if (th) wrap.scrollLeft += th.getBoundingClientRect().left - wrap.getBoundingClientRect().left - tc.getBoundingClientRect().width }, 0);
     });
   }
+  // поиск окна: день + промежуток времени, свободные окна всех репетиторов направления
+  var fDay = "", fFrom = "", fTo = "";
+  function initFind(){
+    var sd = document.getElementById("fDay"), sf = document.getElementById("fFrom"), st = document.getElementById("fTo");
+    if (!sd) return false;
+    var opt = function(s, v, t){ var o = document.createElement("option"); o.value = v; o.textContent = t; s.appendChild(o) };
+    opt(sd, "", "любой"); var today = iso(msk());
+    days().forEach(function(d){ if (iso(d) >= today) opt(sd, iso(d), WD[d.getDay()] + ", " + d.getDate() + " " + MON[d.getMonth()]) });
+    opt(sf, "", "—"); opt(st, "", "—");
+    for (var h = 8; h <= 23; h++){ var v = String(h).padStart(2,"0") + ":00"; opt(sf, v, v); opt(st, v, v) }
+    opt(st, "24:00", "24:00");
+    var upd = function(){ fDay = sd.value; fFrom = sf.value; fTo = st.value; renderBook() };
+    sd.onchange = sf.onchange = st.onchange = upd;
+    document.getElementById("fReset").onclick = function(){ sd.value = sf.value = st.value = ""; upd() };
+    return true;
+  }
+  function renderFind(list, ds, today){
+    var res = document.getElementById("findRes"); if (!res) return;
+    res.innerHTML = "";
+    var on = fDay || fFrom || fTo; document.getElementById("fReset").hidden = !on;
+    if (!on) return;
+    var m = function(h){ var p = h.split(":"); return +p[0] * 60 + +p[1] }, found = [];
+    ds.forEach(function(d){
+      if (iso(d) < today || (fDay && iso(d) !== fDay)) return;
+      list.forEach(function(t){
+        slotsFor(t.name, d).forEach(function(x){
+          if (x.busy || x.past) return;
+          if (fFrom && m(x.h) < m(fFrom)) return;
+          if (fTo && m(x.h) + 60 > m(fTo)) return;
+          found.push({t: t, d: d, h: x.h});
+        });
+      });
+    });
+    found.sort(function(a, b){ return (iso(a.d) + a.h).localeCompare(iso(b.d) + b.h) });
+    if (!found.length) { res.appendChild(el("p","empty","В это время свободных окон нет. Попробуйте другой день или промежуток.")); return }
+    res.appendChild(el("div","find-n","Найдено окон: " + found.length));
+    var g = el("div","find-list");
+    found.forEach(function(f){
+      var b = el("button","find-slot"); b.type = "button";
+      b.appendChild(el("b",null,WD[f.d.getDay()] + ", " + f.d.getDate() + " " + MON[f.d.getMonth()] + " · " + f.h));
+      b.appendChild(el("small",null,f.t.name + " · " + PRICE[cat]));
+      b.onclick = function(){ book(f.t, f.d, f.h) };
+      g.appendChild(b);
+    });
+    res.appendChild(g);
+  }
+  initFind();
+
   function book(t, d, h){
     var catName = CATS.filter(function(x){ return x[0] === cat })[0][1];
     var when = WD[d.getDay()].toLowerCase() + ", " + d.getDate() + " " + MON[d.getMonth()] + ", " + h;

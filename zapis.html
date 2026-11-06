@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=1793979626">
+<link rel="stylesheet" href="style.css?v=1793979754">
 </head>
 <body>
 
@@ -40,6 +40,14 @@
       <h2>Выберите время занятия</h2>
       <p class="lead" style="margin-top:16px">Расписание с трёх дней назад до недели вперёд, время московское, занятие — 60 минут.</p>
       <div class="cats" id="cats" role="group" aria-label="Направление"></div>
+      <div class="find" id="find">
+        <div class="find-t">Найти свободное окно</div>
+        <label>День <select id="fDay"></select></label>
+        <label>С <select id="fFrom"></select></label>
+        <label>До <select id="fTo"></select></label>
+        <button type="button" class="find-x" id="fReset" hidden>Сбросить</button>
+      </div>
+      <div class="find-res" id="findRes" aria-live="polite"></div>
       <div class="legend"><span><i style="background:var(--ok)"></i>свободно</span><span><i style="background:var(--busy)"></i>занято</span><span><i style="background:var(--surface2);box-shadow:inset 0 0 0 1px var(--line)"></i>прошло</span></div>
       <div class="bk" id="bk"></div>
     </div>
@@ -57,8 +65,8 @@
 
 <dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
 
-<script src="tutors.js?v=1793979626"></script>
-<script src="schedule.js?v=1793979626"></script>
-<script src="app.js?v=1793979626"></script>
+<script src="tutors.js?v=1793979754"></script>
+<script src="schedule.js?v=1793979754"></script>
+<script src="app.js?v=1793979754"></script>
 </body>
 </html>
