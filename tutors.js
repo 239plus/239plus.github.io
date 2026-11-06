@@ -4,16 +4,15 @@ const CONTACT_URL = "https://t.me/plus239_bot";
 // Карточки репетиторов. Новых добавляет tools/csv2tutors.py из ответов Google-формы.
 // photo: путь к файлу в img/ или "" — тогда рисуется аватар с инициалами.
 const TUTORS = [
-  {name: "Фёдор Гринь",
+  {name: "Данила Луконин",
     grade: "10 класс, ФМЛ 239",
     photo: "",
     achievements: [
-      "Призёр заключительного этапа ВсОШ (2026)",
       "Городская олимпиада СПб — диплом II степени (2025)",
       "С 5 класса в Матцентре"
     ],
     topics: ["Комбинаторика", "Теория чисел"],
-    directions: ["olymp", "entry", "school"],
+    directions: ["entry", "school"],
     about: "",
     format: "Онлайн"
   },

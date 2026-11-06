@@ -13,7 +13,7 @@ const SCHEDULE = {
     off: [],
     extra: [],
   },
-  "Фёдор Гринь": {
+  "Данила Луконин": {
     week: {},
     busy: [],
     off: [],
