@@ -19,6 +19,12 @@ const SCHEDULE = {
     off: [],
     extra: [],
   },
+  "Савелий Жучков": {
+    week: {},
+    busy: [],
+    off: [],
+    extra: [],
+  },
   "Даниил Луконин": {
     week: {},
     busy: [],
